@@ -4,8 +4,29 @@ import { useState } from 'react';
 function App() {
 
   const [ state, setState ] = useState({
-    board: ['✕', '✕', '✕', '✕', '✕', '✕', '✕', '✕', '✕']
+    board: ['', '', '', '', '', '', '', '', ''],
+    isPlaying: false
   })
+
+  function pushToRandEmpty() {
+    let random = Math.floor(Math.random() * 10);
+    let newBoard = state.board;
+    newBoard[random] = "X";
+    setState({...state, board: newBoard})
+  }
+
+  function computerRound() {
+    setState({...state, isPlaying: true})
+  }
+
+  function userRound() {
+    newBoard[]
+  
+  }
+
+  function playGame() {
+    setState({...state, isPlaying: true});
+  }
 
 
   return (
