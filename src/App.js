@@ -8,34 +8,13 @@ function App() {
     isPlaying: false
   })
 
-  function pushToRandEmpty() {
-    let random = Math.floor(Math.random() * 10);
-    let newBoard = state.board;
-    newBoard[random] = "X";
-    setState({...state, board: newBoard})
-  }
-
-  function computerRound() {
-    setState({...state, isPlaying: true})
-  }
-
-  function userRound() {
-    newBoard[]
-  
-  }
-
-  function playGame() {
-    setState({...state, isPlaying: true});
-  }
-
-
   return (
     <div className="App">
     <header>
       <h1>Tic Tac Toe</h1>
     </header>
      <div className="board">
-      {state.board.map(i => <div className="xo">{i}</div>)}
+      {state.board.map((item, index) => <div className="xo empty" key={index} onClick={handleUserClick}>{item.text}</div>)}
      </div>
      <form>
       <button className="btn-prim btn" type="button">

@@ -69,3 +69,11 @@ button:active {
   background-color: blue;
   border-color: blue;
 }
+
+.empty {
+  cursor: pointer;
+}
+
+.taken {
+  cursor: not-allowed;
+}
