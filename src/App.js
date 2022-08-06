@@ -3,10 +3,24 @@ import { useState } from 'react';
 
 function App() {
 
-  const [ state, setState ] = useState({
+  const initialState = {
     board: ['', '', '', '', '', '', '', '', ''],
     isPlaying: false
-  })
+  }
+
+  const [ state, setState ] = useState(initialState)
+
+  function handleUserMove(e) {
+    let newBoard = state.board;
+    newBoard[e.target.dataset.key] = "⨉"
+    setState({...state, board: newBoard});
+
+    // if there is an empty string on the board, call the handleBotMove 
+  }
+
+  function resetBoard(e) {
+    setState(initialState);
+  }
 
   return (
     <div className="App">
@@ -15,13 +29,13 @@ function App() {
     </header>
     <main>
       <ul className="board">
-        {state.board.map((pawn, index) => <li key={index} className='xo'>{pawn}</li>)}
+        {state.board.map((pawn, index) => <li key={index} data-key={index} className='xo' onClick={handleUserMove}>{pawn}</li>)}
       </ul>
       <form>
         <button className="btn-prim btn" type="button">
           Start
         </button>
-        <button className="btn" type="button">
+        <button className="btn" type="button" onClick={resetBoard}>
           Reset
         </button>
       </form>
