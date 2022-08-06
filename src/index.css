@@ -16,6 +16,10 @@ h1 {
   font-size: 6rem; 
 }
 
+ul {
+  padding: 0;
+}
+
 .board {
   width: 20rem;
 	height: 20rem;
@@ -23,7 +27,6 @@ h1 {
   margin-top: 5rem;
   color: #fff;
   border: 5px solid rgb(0, 0, 0);
-	
 	display: grid;
 	grid-template: repeat(3, 1fr) / repeat(3, 1fr);
 }

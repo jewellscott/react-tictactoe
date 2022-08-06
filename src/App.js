@@ -13,17 +13,19 @@ function App() {
     <header>
       <h1>Tic Tac Toe</h1>
     </header>
-     <div className="board">
-      {state.board.map((item, index) => <div className="xo empty" key={index} onClick={handleUserClick}>{item.text}</div>)}
-     </div>
-     <form>
-      <button className="btn-prim btn" type="button">
-        Start
-      </button>
-      <button className="btn" type="button">
-        Reset
-      </button>
-     </form>
+    <main>
+      <ul className="board">
+        {state.board.map((pawn, index) => <li key={index} className='xo'>{pawn}</li>)}
+      </ul>
+      <form>
+        <button className="btn-prim btn" type="button">
+          Start
+        </button>
+        <button className="btn" type="button">
+          Reset
+        </button>
+      </form>
+    </main>
     </div>
   );
 }
