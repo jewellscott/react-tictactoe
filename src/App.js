@@ -1,5 +1,6 @@
 import './App.css';
 import { useState } from 'react';
+import { hasUnreliableEmptyValue } from '@testing-library/user-event/dist/utils';
 
 function App() {
 
@@ -50,30 +51,41 @@ function App() {
   function evaluateWinner() {
     let newMessage = state.message;
     let newBoard = state.board;
-    const win = [
-      [0, 1, 2],
-      [3, 4, 5],
-      [6, 7, 8],
-      [0, 3, 6],
-      [1, 4, 7],
-      [2, 5, 8],
-      [0, 4, 8],
-      [2, 4, 6]
+    // turn the stateboard into a mini board like this?
+    const evalBoard = [
+      [newBoard[0], newBoard[1], newBoard[2]],
+      [newBoard[3], newBoard[4], newBoard[5]],
+      [newBoard[6], newBoard[7], newBoard[8]],
+      [newBoard[0], newBoard[3], newBoard[6]],
+      [newBoard[1], newBoard[4], newBoard[7]],
+      [newBoard[2], newBoard[5], newBoard[8]],
+      [newBoard[0], newBoard[4], newBoard[8]],
+      [newBoard[2], newBoard[4], newBoard[6]],
     ]
 
-    if (checkIfFull()) {
-      if (newBoard.some(element => element == ['⨉', '⨉', '⨉'])) {
+    let xArr = ['⨉', '⨉', '⨉'];
+    let oArr = ['o', 'o', 'o'];
+    let winner;
+
+    // learned that .includes takes a STRING as a param only
+    if (false) {
         let newMessage = "You won! Press RESET to play again!"
         setState({...state, message: newMessage})
-      } else if (newBoard.some(element => element == ['o', 'o', 'o'])) {
-        let newMessage = "You let an unsentient bot beat you. That's embarrassing. If your ego can handle it, press RESET to play again."
+        console.log("user")
+    } else if (winner == "bot") {
+        let newMessage = "You let a dumb computer beat you. That's embarrassing. If your ego can handle it, press RESET to play again."
         setState({...state, message: newMessage})
-      } else {
+        console.log("bot")
+    } else {
+      if (checkIfFull()) {
         let newMessage = "Awww, it's a draw. Too bad. Press RESET to play again... maybe you'll actually win this time."
         setState({...state, message: newMessage})
+        console.log("full -- draw")
       }
-    } else {
-      handleBotTurn();
+      else {
+        console.log("not full -- bot's turn")
+        handleBotTurn();
+      }
     }
   }
 
