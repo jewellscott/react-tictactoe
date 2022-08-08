@@ -47,7 +47,6 @@ ul {
   font-size: 1.5rem;
   font-weight: 900;
   padding: 1.4rem 1.5rem;
-  /* margin: 2.5rem 1.2rem 0 0 ; */
 }
 
 .btn-prim {
@@ -56,8 +55,8 @@ ul {
 }
 
 button:active {
-  background: blue;
-  border-color: blue;
+  background: rgb(136, 220, 233);
+  border-color: rgb(118, 110, 225);
 }
 
 .slot-btn {
