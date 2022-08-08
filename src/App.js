@@ -6,7 +6,7 @@ function App() {
   const [ state, setState ] = useState({
     board: ['', '', '', '', '', '', '', '', ''],
     message: null,
-    win: false,
+    gameOver: false,
     score: {
       user: 0,
       bot: 0
@@ -65,38 +65,38 @@ function App() {
     // learned that .includes takes a STRING as a param only
     if (evalBoard.includes('⨉,⨉,⨉')) {
         let newMessage = "You won! Press Reset to play again!"
-        setState({...state, message: newMessage, win: true, score: {
+        setState({...state, message: newMessage, gameOver: true, score: {
           ...state.score, user: (state.score.user + 1)
         }})
-        return state.win;
+        return true;
     } else if (evalBoard.includes('o,o,o')) {
-        if (state.score.bot < 5) {
-          let newMessage = "You let a dumb computer beat you. That's embarrassing. If your ego can handle it, press Reset to play again."
-          setState({...state, message: newMessage, win: true, score: {
+        if (state.score.bot < 4) {
+           newMessage = "You let a dumb computer beat you. That's embarrassing. If your ego can handle it, press Reset to play again."
+          setState({...state, message: newMessage, gameOver: true, score: {
             ...state.score, bot: (state.score.bot + 1)
           }})
+          return true;
         } else {
-          let newMessage = `You let a dumb bot beat you ${state.score.bot + 1} times already. Are you sure you have a brain? Press Reset to play again.`
-          setState({...state, message: newMessage, win: true, score: {
+          newMessage = `You let a dumb bot beat you ${state.score.bot + 1} times already. Are you sure you have a brain? Press Reset to play again.`
+          setState({...state, message: newMessage, gameOver: true, score: {
             ...state.score, bot: (state.score.bot + 1)
           }})
+          return true;
         }
-        return state.win;
     } else if (checkIfFull()) {
-        let newMessage = "Awww, it's a draw. Too bad. Press Reset to play again... Maybe you'll actually win this time."
-        setState({...state, message: newMessage})
-        console.log("full -- draw")
-        return state.win;
+        newMessage = "Awww, it's a draw. Too bad. Press Reset to play again. Maybe you'll actually win this time."
+        setState({...state, message: newMessage, gameOver: true})
+        return true;
     } else {
-      return state.win;
+      return false;
     }
   }
 
   function resetBoard(e) {
     setState({...state, 
-      board: ['', '', '', '', '', '', '', '', ''], isPlaying: false,
-     message: null,
-     win: false
+      board: ['', '', '', '', '', '', '', '', ''],
+      message: null,
+      gameOver: false
     });
   }
 
@@ -107,26 +107,25 @@ function App() {
     </header>
     <main>
       <ul className="board">
-        {state.board.map((pawn, index) => <li key={index} data-key={index} className='xo' disabled={pawn === '' && !state.win ? false : true } onClick={handleUserTurn}>{pawn}</li>)}
+        {state.board.map((pawn, index) => <li key={index} data-key={index} className='xo' disabled={pawn === '' && !state.gameOver ? false : true } onClick={handleUserTurn}>{pawn}</li>)}
       </ul>
-      <table className="score-table">
-        <tr>
-          <td>User</td>
-          <td>{state.score.user}</td>
-        </tr>
-        <tr>
-          <td>Bot</td>
-          <td>{state.score.bot}</td>
-        </tr>
-      </table>
-      <form>
-        <button className="btn-prim btn" type="button">
-          Start
-        </button>
-        <button className="btn" type="button" onClick={resetBoard}>
-          Reset
-        </button>
-      </form>
+      <div className="menu">
+        <table className="score-table">
+          <tr>
+            <td>User</td>
+            <td>{state.score.user}</td>
+          </tr>
+          <tr>
+            <td>Bot</td>
+            <td>{state.score.bot}</td>
+          </tr>
+        </table>
+        <form>
+          <button className="btn" type="button" onClick={resetBoard}>
+            Reset
+          </button>
+        </form>
+      </div>
       <p className="message">{state.message}</p>
     </main>
     </div>
