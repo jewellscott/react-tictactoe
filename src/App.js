@@ -5,7 +5,6 @@ function App() {
 
   const [ state, setState ] = useState({
     board: ['', '', '', '', '', '', '', '', ''],
-    isPlaying: false,
     message: null,
     win: false,
     score: {
