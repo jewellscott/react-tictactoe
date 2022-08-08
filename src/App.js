@@ -16,7 +16,22 @@ function App() {
     newBoard[e.target.dataset.key] = "⨉"
     setState({...state, board: newBoard});
 
-    // if there is an empty string on the board, call the handleBotMove 
+    checkIfEmpty();
+  }
+
+  function checkIfEmpty() {
+    if (x) {
+      handleBotTurn();
+    }
+    evaluateWinner();
+  }
+  
+  function handleBotTurn() {
+
+  }
+
+  function evaluateWinner() {
+    console.log("Someone won lol")
   }
 
   function resetBoard(e) {
