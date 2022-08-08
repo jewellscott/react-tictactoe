@@ -3,11 +3,7 @@ import { useState } from 'react';
 
 function App() {
 
-  // TODO
-  // add a scoreboard
-  
-
-  const initialState = {
+  const [ state, setState ] = useState({
     board: ['', '', '', '', '', '', '', '', ''],
     isPlaying: false,
     message: null,
@@ -16,9 +12,7 @@ function App() {
       user: 0,
       bot: 0
     }
-  }
-
-  const [ state, setState ] = useState(initialState)
+  })
 
   function handleUserTurn(e) {
     let newBoard = state.board;
@@ -55,8 +49,6 @@ function App() {
     evaluateWinner();
   }
 
-  // refactor to check for a winner after every human and bot turn
-  // computer wins don't work because the last winning move the computer did isn't registered until the next turn. fix it!
   function evaluateWinner() {
     let newMessage = state.message;
     let newBoard = state.board;
@@ -74,12 +66,22 @@ function App() {
     // learned that .includes takes a STRING as a param only
     if (evalBoard.includes('⨉,⨉,⨉')) {
         let newMessage = "You won! Press Reset to play again!"
-        setState({...state, message: newMessage, win: true})
+        setState({...state, message: newMessage, win: true, score: {
+          ...state.score, user: (state.score.user + 1)
+        }})
         return state.win;
     } else if (evalBoard.includes('o,o,o')) {
-        let newMessage = "You let a dumb computer beat you. That's embarrassing. If your ego can handle it, press Reset to play again."
-        console.log("bot")
-        setState({...state, message: newMessage, win: true})
+        if (state.score.bot < 5) {
+          let newMessage = "You let a dumb computer beat you. That's embarrassing. If your ego can handle it, press Reset to play again."
+          setState({...state, message: newMessage, win: true, score: {
+            ...state.score, bot: (state.score.bot + 1)
+          }})
+        } else {
+          let newMessage = `You let a dumb bot beat you ${state.score.bot + 1} times already. Are you sure you have a brain? Press Reset to play again.`
+          setState({...state, message: newMessage, win: true, score: {
+            ...state.score, bot: (state.score.bot + 1)
+          }})
+        }
         return state.win;
     } else if (checkIfFull()) {
         let newMessage = "Awww, it's a draw. Too bad. Press Reset to play again... Maybe you'll actually win this time."
@@ -92,7 +94,11 @@ function App() {
   }
 
   function resetBoard(e) {
-    setState(initialState);
+    setState({...state, 
+      board: ['', '', '', '', '', '', '', '', ''], isPlaying: false,
+     message: null,
+     win: false
+    });
   }
 
   return (
@@ -104,6 +110,16 @@ function App() {
       <ul className="board">
         {state.board.map((pawn, index) => <li key={index} data-key={index} className='xo' disabled={pawn === '' && !state.win ? false : true } onClick={handleUserTurn}>{pawn}</li>)}
       </ul>
+      <table className="score-table">
+        <tr>
+          <td>User</td>
+          <td>{state.score.user}</td>
+        </tr>
+        <tr>
+          <td>Bot</td>
+          <td>{state.score.bot}</td>
+        </tr>
+      </table>
       <form>
         <button className="btn-prim btn" type="button">
           Start
@@ -112,7 +128,7 @@ function App() {
           Reset
         </button>
       </form>
-      <p>{state.message}</p>
+      <p className="message">{state.message}</p>
     </main>
     </div>
   );
