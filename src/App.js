@@ -3,6 +3,9 @@ import { useState } from 'react';
 
 function App() {
 
+  // TODO
+  // add validation so the user can't click on a full slot
+
   const initialState = {
     // it wouild be easier to handle if i made board an array full of objects that had a persistent key instead of an index... i think
     board: ['', '', '', '', '', '', '', '', ''],
@@ -16,16 +19,11 @@ function App() {
     let newBoard = state.board;
     newBoard[e.target.dataset.key] = "⨉"
     setState({...state, board: newBoard});
-
-    checkIfEmpty();
+    evaluateWinner();
   }
 
-  function checkIfEmpty() {
-    if ((state.board.some(element => element == ''))) {
-      handleBotTurn();
-    } else {
-      evaluateWinner();
-    }
+  function checkIfFull() {
+    return (state.board.every(element => element !== ''))
   }
 
   function getRandomArray(a) {    // Fisher Yates shuffle
@@ -45,13 +43,38 @@ function App() {
     let empty = boardOccupants.filter(elem => elem[0] == '').map(elem => elem[1]);
     let index = getRandomArray(empty)[0];
     newBoard[index] = "o";
-    console.log("bot");
     setState({...state, board: newBoard});
   }
 
   // refactor to check for a winner after every human and bot turn
   function evaluateWinner() {
-    setState({...state, message: "the game is over"})
+    let newMessage = state.message;
+    let newBoard = state.board;
+    const win = [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
+      [0, 4, 8],
+      [2, 4, 6]
+    ]
+
+    if (checkIfFull()) {
+      if (newBoard.some(element => element == ['⨉', '⨉', '⨉'])) {
+        let newMessage = "You won! Press RESET to play again!"
+        setState({...state, message: newMessage})
+      } else if (newBoard.some(element => element == ['o', 'o', 'o'])) {
+        let newMessage = "You let an unsentient bot beat you. That's embarrassing. If your ego can handle it, press RESET to play again."
+        setState({...state, message: newMessage})
+      } else {
+        let newMessage = "Awww, it's a draw. Too bad. Press RESET to play again... maybe you'll actually win this time."
+        setState({...state, message: newMessage})
+      }
+    } else {
+      handleBotTurn();
+    }
   }
 
   function resetBoard(e) {
