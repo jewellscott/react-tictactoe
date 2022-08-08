@@ -4,13 +4,14 @@ import { useState } from 'react';
 function App() {
 
   const initialState = {
+    // it wouild be easier to handle if i made board an array full of objects that had a persistent key instead of an index... i think
     board: ['', '', '', '', '', '', '', '', ''],
     isPlaying: false
   }
 
   const [ state, setState ] = useState(initialState)
 
-  function handleUserMove(e) {
+  function handleUserTurn(e) {
     let newBoard = state.board;
     newBoard[e.target.dataset.key] = "⨉"
     setState({...state, board: newBoard});
@@ -29,7 +30,7 @@ function App() {
     </header>
     <main>
       <ul className="board">
-        {state.board.map((pawn, index) => <li key={index} data-key={index} className='xo' onClick={handleUserMove}>{pawn}</li>)}
+        {state.board.map((pawn, index) => <li key={index} data-key={index} className='xo' onClick={handleUserTurn}>{pawn}</li>)}
       </ul>
       <form>
         <button className="btn-prim btn" type="button">
