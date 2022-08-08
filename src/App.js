@@ -6,7 +6,8 @@ function App() {
   const initialState = {
     // it wouild be easier to handle if i made board an array full of objects that had a persistent key instead of an index... i think
     board: ['', '', '', '', '', '', '', '', ''],
-    isPlaying: false
+    isPlaying: false,
+    message: null
   }
 
   const [ state, setState ] = useState(initialState)
@@ -20,18 +21,37 @@ function App() {
   }
 
   function checkIfEmpty() {
-    if (x) {
+    if ((state.board.some(element => element == ''))) {
       handleBotTurn();
+    } else {
+      evaluateWinner();
     }
-    evaluateWinner();
+  }
+
+  function getRandomArray(a) {    // Fisher Yates shuffle
+    let j, x, i;
+    for (i = a.length - 1; i > 0; i--) {
+        j = Math.floor(Math.random() * (i + 1));
+        x = a[i];
+        a[i] = a[j];
+        a[j] = x;
+    }
+    return a;
   }
   
-  function handleBotTurn() {
-
+  const handleBotTurn = async () => {
+    let newBoard = state.board;
+    let boardOccupants = newBoard.map((elem, index) => [elem, index])
+    let empty = boardOccupants.filter(elem => elem[0] == '').map(elem => elem[1]);
+    let index = getRandomArray(empty)[0];
+    newBoard[index] = "o";
+    console.log("bot");
+    setState({...state, board: newBoard});
   }
 
+  // refactor to check for a winner after every human and bot turn
   function evaluateWinner() {
-    console.log("Someone won lol")
+    setState({...state, message: "the game is over"})
   }
 
   function resetBoard(e) {
@@ -55,6 +75,7 @@ function App() {
           Reset
         </button>
       </form>
+      <p>{state.message}</p>
     </main>
     </div>
   );
